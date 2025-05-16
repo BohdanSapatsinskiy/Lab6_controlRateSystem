@@ -1,0 +1,65 @@
+﻿@page "/edit-category/{Id:int}"
+
+@using controlRateSystem.Data.Models
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<h3>Редагування категорії: @Id</h3>
+
+<EditForm Model="@categoryModel" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="input-group mb-3">
+        <InputText @bind-Value="categoryModel.Name" class="form-control" placeholder="Назва категорії..." />
+        <button class="btn btn-success" type="submit">Зберегти зміни</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Category categoryModel = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                Navigation.NavigateTo("/");
+                return;
+            }
+
+            Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            StateHasChanged();
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        categoryModel = await Http.GetFromJsonAsync<Category>($"api/category/{Id}");
+    }
+
+    private async Task HandleSubmit()
+    {
+        var token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await Http.PutAsJsonAsync($"api/category/{categoryModel.Id}", categoryModel);
+        if (response.IsSuccessStatusCode)
+        {
+            Navigation.NavigateTo("/categories");
+        }
+    }
+}

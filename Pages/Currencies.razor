@@ -1,0 +1,60 @@
+﻿@page "/"
+@inject HttpClient Http
+@using controlRateSystem.Data.Models
+
+<h3>Currencies</h3>
+
+@if (currencies != null)
+{
+    <ul class="list-group">
+        @foreach (var currency in currencies)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="d-flex flex-column flex-grow-1">
+                    <strong>@currency.Name</strong>
+                    <small class="text-muted">(@currency.Code)</small>
+                </div>
+                <span class="badge bg-primary rounded-pill">
+                    @FormatPrice(currency.PriceInDollar)
+                </span>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    private List<Currency> currencies;
+
+    protected override async Task OnInitializedAsync()
+    {
+        currencies = await Http.GetFromJsonAsync<List<Currency>>("api/currency");
+    }
+
+    private string FormatPrice(decimal price)
+    {
+        var priceString = price.ToString("G");
+        var priceParts = priceString.Split(',');
+
+        if (priceParts.Length > 1)
+        {
+            var fractionalPart = priceParts[1];
+            if (fractionalPart.Length > 2 && fractionalPart[2] != '0')
+            {
+                return price.ToString("F4");
+            }
+            else
+            {
+                return price.ToString("F2");
+            }
+        }
+        else
+        {
+            return price.ToString("F2");
+        }
+    }
+}
+

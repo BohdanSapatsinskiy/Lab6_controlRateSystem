@@ -1,0 +1,100 @@
+﻿@page "/categories"
+@using controlRateSystem.Data.Models
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<h3>Управління категоріями</h3>
+
+<button class="btn btn-primary mb-3" @onclick="NavigateToAddCategory">Додати нову категорію</button>
+
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>#</th>
+            <th>Назва</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (categories == null)
+        {
+            <tr><td colspan="3">Завантаження...</td></tr>
+        }
+        else if (categories.Count == 0)
+        {
+            <tr><td colspan="3">Категорій поки немає</td></tr>
+        }
+        else
+        {
+            @foreach (var cat in categories)
+            {
+                <tr>
+                    <td>@cat.Id</td>
+                    <td>@cat.Name</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning me-2" @onclick="() => NavigateToEditCategory(cat.Id)">Змінити</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteCategory(cat.Id)">Видалити</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Category> categories;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                Navigation.NavigateTo("/");
+                return;
+            }
+
+            Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            await LoadCategories();
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadCategories()
+    {
+        categories = await Http.GetFromJsonAsync<List<Category>>("api/category");
+    }
+
+    private void NavigateToAddCategory()
+    {
+        Navigation.NavigateTo("/add-category");
+    }
+
+    private void NavigateToEditCategory(int id)
+    {
+        Navigation.NavigateTo($"/edit-category/{id}");
+    }
+
+    private async Task DeleteCategory(int id)
+    {
+        var token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await Http.DeleteAsync($"api/category/{id}");
+        if (response.IsSuccessStatusCode)
+        {
+            await LoadCategories();
+        }
+    }
+}

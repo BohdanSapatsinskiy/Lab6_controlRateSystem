@@ -1,0 +1,58 @@
+﻿@page "/add-category"
+@using controlRateSystem.Data.Models
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<h3>Додавання нової категорії</h3>
+
+<EditForm Model="@categoryModel" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="input-group mb-3">
+        <InputText @bind-Value="categoryModel.Name" class="form-control" placeholder="Назва категорії..." />
+        <button class="btn btn-success" type="submit">Додати</button>
+    </div>
+</EditForm>
+
+@code {
+    private Category categoryModel = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                Navigation.NavigateTo("/");
+                return;
+            }
+
+            Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            StateHasChanged();
+        }
+    }
+
+
+    private async Task HandleSubmit()
+    {
+        var token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await Http.PostAsJsonAsync("api/category", categoryModel);
+        if (response.IsSuccessStatusCode)
+        {
+            Navigation.NavigateTo("/categories");
+        }
+    }
+}

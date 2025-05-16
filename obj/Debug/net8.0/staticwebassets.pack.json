@@ -1,0 +1,61 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\obj\\Debug\\net8.0\\compressed\\0109sxn9ul.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\controlRateSystemBlazorApp.styles.css",
+      "PackagePath": "staticwebassets\\controlRateSystemBlazorApp.styles.css"
+    },
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\Sapat\\source\\repos\\controlRateSystemBlazorApp\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.controlRateSystemBlazorApp.props",
+      "PackagePath": "build\\controlRateSystemBlazorApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.controlRateSystemBlazorApp.props",
+      "PackagePath": "buildMultiTargeting\\controlRateSystemBlazorApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.controlRateSystemBlazorApp.props",
+      "PackagePath": "buildTransitive\\controlRateSystemBlazorApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.controlRateSystemBlazorApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
